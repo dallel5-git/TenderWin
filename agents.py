@@ -316,32 +316,40 @@ def run_tender_pipeline(uploaded_files: list) -> dict:
     
     try:
         for uploaded_file in uploaded_files:
-            # Créer un fichier temporaire pour gérer les UploadedFile de Streamlit
-            # Cela évite les erreurs avec les objets io.BytesIO et les problèmes de chemins
-            suffix = os.path.splitext(uploaded_file.name)[1]
-            with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-                tmp.write(uploaded_file.getvalue())
-                tmp_path = tmp.name
+            # Vérifier si c'est une chaîne de caractères (chemin local) ou un objet Streamlit
+            if isinstance(uploaded_file, str):
+                tmp_path = uploaded_file
+                file_name = os.path.basename(uploaded_file)
+                is_temp = False
+            else:
+                # Créer un fichier temporaire pour gérer les UploadedFile de Streamlit
+                # Cela évite les erreurs avec les objets io.BytesIO et les problèmes de chemins
+                file_name = uploaded_file.name
+                suffix = os.path.splitext(file_name)[1]
+                with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+                    tmp.write(uploaded_file.getvalue())
+                    tmp_path = tmp.name
+                is_temp = True
 
             try:
                 try:
                     # Essai avec le format de la version SDK récente (file=...)
                     file_obj = client.files.upload(
                         file=tmp_path,
-                        config={'display_name': uploaded_file.name}
+                        config={'display_name': file_name}
                     )
                 except TypeError as e:
                     if "unexpected keyword argument" in str(e):
                         # Essai avec l'ancien format SDK sans mot-clé
                         file_obj = client.files.upload(
                             tmp_path,
-                            config={'display_name': uploaded_file.name}
+                            config={'display_name': file_name}
                         )
                     else:
                         raise
             finally:
                 # Nettoyage du fichier temporaire local
-                if os.path.exists(tmp_path):
+                if is_temp and os.path.exists(tmp_path):
                     os.remove(tmp_path)
 
             gemini_files.append(file_obj)
