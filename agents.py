@@ -7,11 +7,9 @@ Architecture à 3 agents orchestrés séquentiellement :
   3. AuditorAgent    → Audite la proposition (prix, certifications, conformité)
 
 Framework : google-genai
-Adapté pour Streamlit
 """
 
 import os
-import tempfile
 
 from dotenv import load_dotenv
 from google import genai
@@ -286,8 +284,8 @@ def run_auditor_agent(proposition: str, gemini_files: list) -> str:
     return response.text
 
 
-def run_tender_pipeline(uploaded_files: list) -> dict:
-    """Exécute le pipeline complet de réponse à un appel d'offres pour Streamlit.
+def run_tender_pipeline(file_paths: list[str]) -> dict:
+    """Exécute le pipeline complet de réponse à un appel d'offres.
 
     Orchestre séquentiellement les 3 agents :
       1. KnowledgeAgent analyse le(s) RFP et collecte les données
@@ -295,10 +293,9 @@ def run_tender_pipeline(uploaded_files: list) -> dict:
       3. AuditorAgent audite la proposition finale
 
     Gère le cycle de vie des fichiers via la Gemini Files API.
-    Adapté pour Streamlit: accepte des objets UploadedFile.
 
     Args:
-        uploaded_files: Liste des objets UploadedFile fournis par st.file_uploader.
+        file_paths: Liste des chemins vers les fichiers RFP à traiter.
 
     Returns:
         dict: Un dictionnaire contenant les clés :
@@ -307,7 +304,7 @@ def run_tender_pipeline(uploaded_files: list) -> dict:
             - 'audit'      : Le rapport d'audit de l'AuditorAgent
     """
     print("=" * 60)
-    print("🚀 TENDERWIN — Lancement du pipeline (Streamlit)")
+    print("🚀 TENDERWIN — Lancement du pipeline (google-genai)")
     print("=" * 60)
 
     # ── Étape 0 : Upload vers Google GenAI ──
@@ -315,43 +312,12 @@ def run_tender_pipeline(uploaded_files: list) -> dict:
     gemini_files = []
     
     try:
-        for uploaded_file in uploaded_files:
-            # Vérifier si c'est une chaîne de caractères (chemin local) ou un objet Streamlit
-            if isinstance(uploaded_file, str):
-                tmp_path = uploaded_file
-                file_name = os.path.basename(uploaded_file)
-                is_temp = False
-            else:
-                # Créer un fichier temporaire pour gérer les UploadedFile de Streamlit
-                # Cela évite les erreurs avec les objets io.BytesIO et les problèmes de chemins
-                file_name = uploaded_file.name
-                suffix = os.path.splitext(file_name)[1]
-                with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-                    tmp.write(uploaded_file.getvalue())
-                    tmp_path = tmp.name
-                is_temp = True
-
-            try:
-                try:
-                    # Essai avec le format de la version SDK récente (file=...)
-                    file_obj = client.files.upload(
-                        file=tmp_path,
-                        config={'display_name': file_name}
-                    )
-                except TypeError as e:
-                    if "unexpected keyword argument" in str(e):
-                        # Essai avec l'ancien format SDK sans mot-clé
-                        file_obj = client.files.upload(
-                            tmp_path,
-                            config={'display_name': file_name}
-                        )
-                    else:
-                        raise
-            finally:
-                # Nettoyage du fichier temporaire local
-                if is_temp and os.path.exists(tmp_path):
-                    os.remove(tmp_path)
-
+        for path in file_paths:
+            # Upload du fichier. display_name permet au modèle de l'identifier.
+            file_obj = client.files.upload(
+                file=path,
+                config={'display_name': os.path.basename(path)}
+            )
             gemini_files.append(file_obj)
             print(f"   Uploadé : {file_obj.display_name} (URI: {file_obj.uri})")
 
@@ -389,4 +355,3 @@ def run_tender_pipeline(uploaded_files: list) -> dict:
         "proposition": proposition,
         "audit": audit,
     }
-
