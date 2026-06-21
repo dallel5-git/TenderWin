@@ -1,0 +1,9 @@
+Nom de l'entreprise : TechSecure Solutions
+Date de création : 2020
+Siège social : Paris, France (Opérations mondiales)
+Effectif : 150 employés
+Mission : Sécuriser les infrastructures Cloud des entreprises face aux menaces de nouvelle génération.
+Certifications : ISO 27001 (Sécurité de l'information), SOC 2 Type II, RGPD Compliant.
+SLA (Service Level Agreement) : Garantie de disponibilité de 99.99%.
+Support : Équipe support disponible 24/7/365 en français et en anglais.
+Clients de référence : Banque Nationale, MegaRetail, SantéPlus.

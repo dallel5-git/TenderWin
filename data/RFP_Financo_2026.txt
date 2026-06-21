@@ -1,0 +1,15 @@
+ÉMETTEUR : Financo Group (Secteur Bancaire)
+OBJET : Sécurisation de l'infrastructure Cloud pour le passage au télétravail.
+
+Contexte :
+Financo Group déploie une nouvelle politique de télétravail pour ses employés. Nous recherchons une solution SaaS pour sécuriser les accès de nos collaborateurs à nos applications internes hébergées sur le Cloud.
+
+Exigences techniques et fonctionnelles (Ce que vous devez inclure dans votre réponse) :
+
+Présentation de votre entreprise : Qui êtes-vous et avez-vous de l'expérience dans le secteur financier ?
+
+Conformité : Êtes-vous certifiés ISO 27001 ? C'est un critère éliminatoire.
+
+Disponibilité : Pouvez-vous garantir une disponibilité supérieure à 99.9% et un support 24/7 ?
+
+Proposition Financière : Veuillez fournir un devis détaillé pour sécuriser 200 utilisateurs avec votre niveau de protection le plus élevé, incluant le support 24/7 et les frais de mise en place.

@@ -1,0 +1,41 @@
+# Environnements virtuels
+venv/
+env/
+.venv/
+.env
+
+# Fichiers compilés Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Dossiers de sortie / Logs
+output/
+resultats/
+*.log
+
+# Outils / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Fichiers spécifiques au framework / Streamlit
+.streamlit/

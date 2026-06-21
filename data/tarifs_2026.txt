@@ -1,0 +1,6 @@
+Produit / Service,Description,Prix Unitaire (Annuel),Quantité Minimum
+Licence CloudShield Starter,"Protection basique (Firewall, Antivirus Cloud)",120€ / utilisateur,50
+Licence CloudShield Enterprise,"Protection avancée (Zéro Trust, Détection IA)",250€ / utilisateur,100
+Module Audit Continu,Scan de vulnérabilités hebdomadaire,5 000€ (Forfait),N/A
+Support Premium 24/7,"Accès prioritaire, gestionnaire de compte dédié",10 000€ (Forfait),N/A
+Frais d'intégration (Setup),Configuration initiale et formation (One-off),3 500€ (Forfait),N/A
